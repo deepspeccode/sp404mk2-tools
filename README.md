@@ -68,22 +68,81 @@ Tools for downloading and analyzing SP-404 MK2 firmware:
 
 ### Prerequisites
 
-- Python 3.x (for BPM editing tool)
+- Python 3.x (for all toolkit tools)
 - `xxd` (for hex dump conversion)
 - `wget` and `unzip` (for firmware download)
 - Standard Unix tools (`bash`, `perl`, `gawk`)
 
-### Setup
+### Quick Setup
 
 1. Clone this repository
-2. (Optional) Download firmware for analysis:
+2. Run the setup script:
+   ```bash
+   ./setup.sh
+   ```
+3. (Optional) Download firmware for analysis:
    ```bash
    cd firmware && ./get_firmware.sh
    ```
 
-## 📖 Usage Examples
+### Manual Setup
 
-### Working with Pattern Files
+If you prefer manual setup:
+```bash
+pip3 install flask werkzeug pandas matplotlib numpy
+chmod +x *.py bin/*.sh firmware/*.sh
+```
+
+## 🚀 New Toolkit Features
+
+This repository now includes a comprehensive toolkit with multiple interfaces:
+
+### 1. **Unified CLI Tool** (`sp404_toolkit.py`)
+```bash
+# Get pad information
+./sp404_toolkit.py padconf info padconf/PADCONF001.BIN --pad 1
+
+# Set pad BPM
+./sp404_toolkit.py padconf set-bpm padconf/PADCONF001.BIN --pad 1 --bpm 120.0
+
+# List all pad configurations
+./sp404_toolkit.py padconf list padconf/PADCONF001.BIN
+
+# Analyze patterns
+./sp404_toolkit.py pattern info pattern/PTN00001-01.BIN
+
+# Create backups
+./sp404_toolkit.py backup create my_project.sp404backup padconf/PADCONF001.BIN pattern/
+```
+
+### 2. **Advanced Pattern Editor** (`pattern_editor.py`)
+```bash
+# Detailed pattern analysis
+./pattern_editor.py pattern/PTN00001-01.BIN --summary
+
+# Show event timeline
+./pattern_editor.py pattern/PTN00001-01.BIN --timeline
+
+# Export to JSON
+./pattern_editor.py pattern/PTN00001-01.BIN --export-json pattern_data.json
+```
+
+### 3. **Web Interface** (`web_interface.py`)
+```bash
+# Start browser-based interface
+./web_interface.py
+# Then open http://localhost:5000
+```
+
+### 4. **Interactive Notebook** (`SP404_MK2_Explorer.ipynb`)
+```bash
+# For data science and exploration
+jupyter notebook SP404_MK2_Explorer.ipynb
+```
+
+## 📖 Legacy Usage Examples
+
+### Working with Pattern Files (Original Methods)
 
 Convert binary pattern to readable hex dump:
 ```bash
@@ -95,9 +154,9 @@ Convert hex dump back to binary:
 xxd -r pattern/PTN00001-01.TXT pattern/PTN00001-01.BIN
 ```
 
-### Editing Pad Configurations
+### Editing Pad Configurations (Original Method)
 
-Modify pad BPM using the Python script:
+Modify pad BPM using the original Python script:
 ```bash
 python3 padconf/mk2_bpm_edit.py padconf/PADCONF001.BIN 1 12000
 # Sets pad 1 to 120.00 BPM (12000 = 120.00)
